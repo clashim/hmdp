@@ -18,6 +18,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import static com.hmdp.utils.RedisConstants.CACHE_NULL_TTL;
 import static com.hmdp.utils.RedisConstants.CACHE_SHOP_TYPE_KEY;
 
 /**
@@ -59,7 +60,7 @@ public class ShopTypeServiceImpl extends ServiceImpl<ShopTypeMapper, ShopType> i
         // 3. 没查到，fail
         if (CollectionUtil.isEmpty(shopTypes)) {
             // 缓存空结果，防穿透
-            stringredisTemplate.opsForValue().set(key, "[]", 2, TimeUnit.MINUTES);
+            stringredisTemplate.opsForValue().set(key, "[]", CACHE_NULL_TTL, TimeUnit.MINUTES);
             return Result.fail("商铺信息不存在！！");
         }
 
